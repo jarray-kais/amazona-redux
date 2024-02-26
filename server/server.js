@@ -2,9 +2,12 @@ import express from 'express';
 import data from './data.js';
 import cors from 'cors'
 import mongoose from 'mongoose'
+import dotenv from 'dotenv'
 
 
 import userRouter from './Routes/userRoutes.js';
+
+dotenv.config();
 
 mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/amazona-redux') 
 .then(() => {
