@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { addToCart } from "../actions/cartActions";
+import { addToCart, removeFromCart } from "../actions/cartActions";
 import MessageBox from "../components/MessageBox";
 
 const CartScreen = () => {
@@ -25,9 +25,9 @@ const CartScreen = () => {
     }
   }, [dispatch, productId, qty]);
 
-  const removeFromCartHandler = (e)=>{
-    e.preventDefault()
+  const removeFromCartHandler = (id)=>{
     //delete action
+    dispatch(removeFromCart(id))
 
   }
   const checkoutHandler = () =>{
@@ -39,12 +39,12 @@ const CartScreen = () => {
       <div className="col-2">
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
-          CartScreen(
+          
             <MessageBox>
               Cart Is Empty <Link to="/">Go Shopping</Link>
             </MessageBox>
           )
-        ) : (
+         : (
           <ul>
             {cartItems.map((item) => (
               <li key={item.product}>
@@ -73,7 +73,7 @@ const CartScreen = () => {
                   <div>
                     <button
                     type="button"
-                    onClick={()=>removeFromCartHandler(item.product)}
+                    onClick={() => removeFromCartHandler(item.product)}
                     >
                       Delete
                     </button>
