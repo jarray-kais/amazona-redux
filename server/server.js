@@ -1,6 +1,18 @@
 import express from 'express';
 import data from './data.js';
 import cors from 'cors'
+import mongoose from 'mongoose'
+
+
+import userRouter from './Routes/userRoutes.js';
+
+mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/amazona-redux') 
+.then(() => {
+  console.log("connected to db");
+})
+.catch((err) => {
+  console.log(err.message);
+});
 
 const app = express();
 app.use(express.json(), express.urlencoded({ extended: true }),cors());
@@ -19,8 +31,10 @@ app.get('/api/products', (req, res) => {
   res.send(data.products);
 });
 
-app.get('/', (req, res) => {
-  res.send('Server is ready');
+
+app.use('/api/users', userRouter);
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
 });
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
