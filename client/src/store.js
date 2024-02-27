@@ -2,7 +2,7 @@ import { applyMiddleware, legacy_createStore as createStore , compose, combineRe
 import {thunk} from 'redux-thunk'
 import { productDetailsReducer, productListReducer } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducers';
-import { userSigninRducerr } from './reducers/userReducer';
+import { userRegisterReducer, userSigninRducerr } from './reducers/userReducer';
 
 
 const initialState = {
@@ -20,6 +20,7 @@ const reducer = combineReducers({
     productDetails : productDetailsReducer,
     cart : cartReducer,
     userSignin : userSigninRducerr ,
+    userRegister : userRegisterReducer ,
 
 
 })
