@@ -1,5 +1,4 @@
 import express from 'express';
-import data from './data.js';
 import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
@@ -24,7 +23,6 @@ app.use(express.json(), express.urlencoded({ extended: true }),cors());
 
 app.use('/api/users', userRouter);
 app.use('/api/products',productRouter)
-
 
 
 app.use((err, req, res, next) => {
