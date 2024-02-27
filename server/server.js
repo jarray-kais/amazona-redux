@@ -25,6 +25,9 @@ app.use(express.json(), express.urlencoded({ extended: true }),cors());
 app.use('/api/users', userRouter);
 app.use('/api/products',productRouter)
 app.use('/api/orders', orderRouter);
+app.get('/api/config/paypal', (req, res) => {
+  res.send(process.env.PAYPAL_CLIENT_ID || 'sb');
+});
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
