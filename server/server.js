@@ -6,6 +6,7 @@ import dotenv from 'dotenv'
 
 import userRouter from './Routes/userRoutes.js';
 import productRouter from './Routes/productRouter.js';
+import orderRouter from './Routes/orderRoutes.js';
 
 dotenv.config();
 
@@ -23,7 +24,7 @@ app.use(express.json(), express.urlencoded({ extended: true }),cors());
 
 app.use('/api/users', userRouter);
 app.use('/api/products',productRouter)
-
+app.use('/api/orders', orderRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
