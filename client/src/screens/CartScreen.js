@@ -13,6 +13,7 @@ const CartScreen = () => {
   const qtyInUrl = new URLSearchParams(search).get("qty");
   console.log(qtyInUrl);
   const qty = qtyInUrl ? Number(qtyInUrl) : 1;
+  
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;

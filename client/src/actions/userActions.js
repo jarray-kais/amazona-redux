@@ -9,6 +9,7 @@ import {
   USER_SIGNOUT,
 } from "../constants/userConstants";
 
+
 export const register = (name, email, password) => async (dispatch) => {
   dispatch({ type: USER_REGISTER_REQUEST, payload: { email, password } });
   try {

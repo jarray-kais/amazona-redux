@@ -66,7 +66,7 @@ function App() {
         <main>
           <Routes>
           <Route path="/order/:id" element={<OrderScreen />}></Route>
-          <Route path="/signin/shipping" element={<ShippingAddressScreen/>}></Route>
+          <Route path="shipping" element={<ShippingAddressScreen/>}></Route>
           <Route path="/payment" element={<PaymentMethodScreen/>}></Route>
           <Route path="/placeorder" element={<PlaceOrderScreen/>}></Route>
             <Route path="/signin" element={<SigninScreen />}></Route>
