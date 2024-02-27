@@ -2,9 +2,14 @@ import { applyMiddleware, legacy_createStore as createStore , compose, combineRe
 import {thunk} from 'redux-thunk'
 import { productDetailsReducer, productListReducer } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducers';
+import { userSigninRducerr } from './reducers/userReducer';
 
 
 const initialState = {
+    userSignin : {
+        userInfo : localStorage.getItem('userInfo')? JSON.parse(localStorage.getItem('userInfo')) : null 
+    },
+
     cart : {
         cartItems : localStorage.getItem('carItems') ?
         JSON.parse(localStorage.getItem('carItems')):[]
@@ -14,6 +19,7 @@ const reducer = combineReducers({
     productList : productListReducer ,
     productDetails : productDetailsReducer,
     cart : cartReducer,
+    userSignin : userSigninRducerr ,
 
 
 })
