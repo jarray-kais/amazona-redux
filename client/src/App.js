@@ -15,8 +15,9 @@ import OrderHistoryScreen from "./screens/OrderHistoryScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import PrivateRoute from "./components/PrivateRoute";
 import ProductListScreen from "./screens/ProductListScreen";
-import ProductEditScreen from './screens/ProductEditScreen'
+import ProductEditScreen from "./screens/ProductEditScreen";
 import AdminRoute from "./components/AdminRoute";
+import OrderListScreen from "./screens/OrderListScreen";
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -105,10 +106,10 @@ function App() {
             <Route path="/signin" element={<SigninScreen />}></Route>
             <Route path="/register" element={<RegisterScreen />}></Route>
             <Route
-            path="/product/:id/edit"
-            element={<ProductEditScreen />}
-            exact
-          ></Route>
+              path="/product/:id/edit"
+              element={<ProductEditScreen />}
+              exact
+            ></Route>
             <Route path="/cart/:id?" element={<CartScreen />} />
             <Route path="/product/:id" element={<ProductScreen />} eact></Route>
             <Route path="/" element={<HomeScreen />} exact></Route>
@@ -117,11 +118,29 @@ function App() {
               element={<OrderHistoryScreen />}
             ></Route>
             <Route
-             path="/profile" element={<PrivateRoute><ProfileScreen /></PrivateRoute>}>
-            </Route>
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <ProfileScreen />
+                </PrivateRoute>
+              }
+            ></Route>
             <Route
-             path="/productlist" element={<AdminRoute><ProductListScreen /></AdminRoute>}>
-            </Route>
+              path="/productlist"
+              element={
+                <AdminRoute>
+                  <ProductListScreen />
+                </AdminRoute>
+              }
+            ></Route>
+            <Route
+              path="/orderlist"
+              element={
+                <AdminRoute>
+                  <OrderListScreen />
+                </AdminRoute>
+              }
+            ></Route>
           </Routes>
         </main>
         <footer className="row center">ALL RIGHT RESERVED</footer>
