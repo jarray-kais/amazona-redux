@@ -6,8 +6,10 @@ import {
 } from "redux";
 import { thunk } from "redux-thunk";
 import {
+  productCreateReducer,
   productDetailsReducer,
   productListReducer,
+  productUpdateReducer,
 } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducers";
 import {
@@ -52,6 +54,8 @@ const reducer = combineReducers({
   orderMineList: orderMineListReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  productCreate: productCreateReducer,
+  productUpdate: productUpdateReducer,
 });
 
 const composeEnhancher = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
