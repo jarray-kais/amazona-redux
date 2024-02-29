@@ -3,6 +3,7 @@ import expressAsyncHandler from 'express-async-handler';
 import data from '../data.js';
 import Product from '../models/productModel.js';
 import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
+import User from '../models/userModel.js';
 
 const productRouter = express.Router();
 
@@ -11,7 +12,7 @@ productRouter.get(
   expressAsyncHandler(async (req, res) => {
     const seller = req.query.seller || '';
     const sellerFilter = seller ? { seller } : {};
-    const products = await Product.find({ ...sellerFilter });
+    const products = await Product.find({ ...sellerFilter }).populate('seller' , 'seller.name seller.logo');
     res.send(products);
   })
 );
@@ -19,16 +20,29 @@ productRouter.get(
 productRouter.get(
   '/seed',
   expressAsyncHandler(async (req, res) => {
+    const seller = await User.findOne({isSeller:true});
+    if(seller){
+      const products = data.products.map((product)=>({
+          ...product , seller : seller._id,
+      }))
+
     // await Product.remove({});
-    const createdProducts = await Product.insertMany(data.products);
+    const createdProducts = await Product.insertMany(products);
     res.send({ createdProducts });
+  } else {
+      res.status(500).send({mess : 'no seller found'})
+  }
   })
 );
 
 productRouter.get(
   '/:id',
   expressAsyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id);
+    //const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate(
+      'seller',
+      'seller.name seller.logo seller.rating seller.numReviews'
+    );
     if (product) {
       res.send(product);
     } else {

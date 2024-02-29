@@ -21,6 +21,7 @@ import OrderListScreen from "./screens/OrderListScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from './screens/UserEditScreen';
 import SellerRoute from './components/SellerRoute'
+import SellerScreen from "./screens/SellerScreen";
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -192,7 +193,7 @@ function App() {
                 </SellerRoute>
               }
             ></Route>
-           
+           <Route path="/seller/:id" element={<SellerScreen/>} />
             
           </Routes>
         </main>
