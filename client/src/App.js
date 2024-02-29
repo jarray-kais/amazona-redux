@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import ProductScreen from "./screens/ProductScreen";
@@ -19,9 +19,14 @@ import ProductEditScreen from "./screens/ProductEditScreen";
 import AdminRoute from "./components/AdminRoute";
 import OrderListScreen from "./screens/OrderListScreen";
 import UserListScreen from "./screens/UserListScreen";
-import UserEditScreen from './screens/UserEditScreen';
-import SellerRoute from './components/SellerRoute'
+import UserEditScreen from "./screens/UserEditScreen";
+import SellerRoute from "./components/SellerRoute";
 import SellerScreen from "./screens/SellerScreen";
+import SearchBox from "./components/SearchBox";
+import SearchScreen from "./screens/SearchScreen";
+import {listProductCategories}  from './actions/productActions'
+import LoadingBox from './components/LoadingBox';
+import MessageBox from './components/MessageBox';
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -37,14 +42,36 @@ function App() {
     dispatch(signout());
   };
 
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+
+  const productCategoryList = useSelector((state) => state.productCategoryList);
+  const {
+    loading: loadingCategories,
+    error: errorCategories,
+    categories,
+  } = productCategoryList;
+  useEffect(() => {
+    dispatch(listProductCategories());
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
       <div className="grid-container">
         <header className="row">
           <div>
+          <button
+              type="button"
+              className="open-sidebar"
+              onClick={() => setSidebarIsOpen(true)}
+            >
+              <i className="fa fa-bars"></i>
+            </button>
             <Link className="brand" to="/">
               amazona
             </Link>
+          </div>
+          <div>
+            <SearchBox></SearchBox>
           </div>
           <div>
             <Link to={"/cart"}>
@@ -116,6 +143,36 @@ function App() {
             )}
           </div>
         </header>
+        <aside className={sidebarIsOpen ? 'open' : ''}>
+          <ul className="categories">
+            <li>
+              <strong>Categories</strong>
+              <button
+                onClick={() => setSidebarIsOpen(false)}
+                className="close-sidebar"
+                type="button"
+              >
+                <i className="fa fa-close"></i>
+              </button>
+            </li>
+            {loadingCategories ? (
+              <LoadingBox></LoadingBox>
+            ) : errorCategories ? (
+              <MessageBox variant="danger">{errorCategories}</MessageBox>
+            ) : (
+              categories.map((c) => (
+                <li key={c}>
+                  <Link
+                    to={`/search/category/${c}`}
+                    onClick={() => setSidebarIsOpen(false)}
+                  >
+                    {c}
+                  </Link>
+                </li>
+              ))
+            )}
+          </ul>
+        </aside>
         <main>
           <Routes>
             <Route path="/order/:id" element={<OrderScreen />}></Route>
@@ -150,7 +207,8 @@ function App() {
                 <AdminRoute>
                   <ProductListScreen />
                 </AdminRoute>
-              } exact
+              }
+              exact
             ></Route>
             <Route
               path="/orderlist"
@@ -158,9 +216,10 @@ function App() {
                 <AdminRoute>
                   <OrderListScreen />
                 </AdminRoute>
-              } exact
+              }
+              exact
             ></Route>
-              <Route
+            <Route
               path="/userlist"
               element={
                 <AdminRoute>
@@ -168,7 +227,7 @@ function App() {
                 </AdminRoute>
               }
             ></Route>
-                <Route
+            <Route
               path="/user/:id/edit"
               element={
                 <AdminRoute>
@@ -177,7 +236,7 @@ function App() {
               }
             ></Route>
 
-              <Route
+            <Route
               path="/productlist/seller"
               element={
                 <SellerRoute>
@@ -193,8 +252,16 @@ function App() {
                 </SellerRoute>
               }
             ></Route>
-           <Route path="/seller/:id" element={<SellerScreen/>} />
-            
+            <Route path="/seller/:id" element={<SellerScreen />} />
+
+            <Route path="/search/category/:category" element={<SearchScreen />} exact />
+            <Route path="/search/category/:category/name/:name" element={<SearchScreen />} exact />
+
+            <Route path="/search/name/:name?" element={<SearchScreen />} />
+
+              <Route path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order" element={<SearchScreen />} />
+
+
           </Routes>
         </main>
         <footer className="row center">ALL RIGHT RESERVED</footer>

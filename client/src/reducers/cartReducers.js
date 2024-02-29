@@ -15,33 +15,30 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
       console.log(existitem);
       if (existitem) {
         return {
-          ...state
-          ,
-          error : '',
-
+          ...state,
+          error: "",
           cartItems: state.cartItems.map((x) =>
             x.product === existitem.product ? item : x
           ),
         };
       } else {
-        return { ...state, cartItems: [...state.cartItems, item] ,error : '' };
+        return { ...state, error: "", cartItems: [...state.cartItems, item] };
       }
 
     case CART_REMOVE_ITEM:
       return {
         ...state,
-        error : '',
+        error: "",
         cartItems: state.cartItems.filter((x) => x.product !== action.payload),
       };
     case CART_SAVE_SHIPPING_ADDRESS:
       return { ...state, shippingAddress: action.payload };
     case CART_SAVE_PAYMENT_METHOD:
       return { ...state, paymentMethod: action.payload };
+    case CART_ADD_ITEM_FAIL:
+      return { ...state, error: action.payload };
     case CART_EMPTY:
-      return { ...state,error : '', cartItems: [] };
-
-    case CART_ADD_ITEM_FAIL :
-      return {...state , error:action.payload}
+      return { ...state, error: "", cartItems: [] };
 
     default:
       return state;
