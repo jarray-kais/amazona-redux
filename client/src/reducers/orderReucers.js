@@ -4,6 +4,14 @@ import {
     ORDER_CREATE_RESET,
     ORDER_CREATE_SUCCESS,
 
+    ORDER_DELETE_FAIL,
+
+    ORDER_DELETE_REQUEST,
+
+    ORDER_DELETE_RESET,
+
+    ORDER_DELETE_SUCCESS,
+
     ORDER_DELIVER_FAIL,
 
     ORDER_DELIVER_REQUEST,
@@ -108,6 +116,21 @@ export const orderDeliverReducer = (state = {}, action) => {
     case ORDER_DELIVER_FAIL:
       return { loading: false, error: action.payload };
     case ORDER_DELIVER_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const orderDeleteReducer = (state = {loading : false}, action) => {
+  switch (action.type) {
+    case ORDER_DELETE_REQUEST:
+      return { loading: true };
+    case ORDER_DELETE_SUCCESS:
+      return { loading: false, success: true };
+    case ORDER_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+    case ORDER_DELETE_RESET:
       return {};
     default:
       return state;

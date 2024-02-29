@@ -1,48 +1,68 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { listOrders } from '../actions/orderActions';
+import { deleteOrder, listOrders } from '../actions/orderActions';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { useNavigate } from 'react-router-dom';
+import { ORDER_DELETE_RESET } from '../constants/orderConstants';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const OrderListScreen = () => {
+export default function OrderListScreen() {
 
-    const navigate = useNavigate()
-    const orderList = useSelector((state) => state.orderList);
-    const { loading, error, orders } = orderList;
-    const dispatch = useDispatch();
-    useEffect(() => {
-      dispatch(listOrders());
-    }, [dispatch]);
-    const deleteHandler = (order) => {
-      // TODO: delete handler
-    };
-    return (
-      <div>
-        <h1>Orders</h1>
-        {loading ? (
-          <LoadingBox></LoadingBox>
-        ) : error ? (
-          <MessageBox variant="danger">{error}</MessageBox>
-        ) : (
-          <table className="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>USER</th>
-                <th>DATE</th>
-                <th>TOTAL</th>
-                <th>PAID</th>
-                <th>DELIVERED</th>
-                <th>ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order) => (
-                <tr key={order._id}>
-                  <td>{order._id}</td>
-                  <td>{order.user.name}</td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
+  const navigate = useNavigate()
+
+  const {pathname} = useLocation()
+  console.log(`path is ${pathname}`)
+  const sellerMode = pathname.indexOf('/seller')>=0
+
+  const orderList = useSelector((state) => state.orderList);
+  const { loading, error, orders } = orderList;
+  const orderDelete = useSelector((state) => state.orderDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = orderDelete;
+
+  const userSignin = useSelector((state)=> state.userSignin)
+    const {userInfo} = userSignin
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: ORDER_DELETE_RESET });
+    dispatch(listOrders({seller : sellerMode ? userInfo._id : ' '}));
+  }, [dispatch, successDelete,sellerMode , userInfo._id]);
+  const deleteHandler = (order) => {
+    if (window.confirm('Are you sure to delete?')) {
+      dispatch(deleteOrder(order._id));
+    }
+  };
+  return (
+    <div>
+      <h1>Orders</h1>
+      {loadingDelete && <LoadingBox></LoadingBox>}
+      {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
+      {loading ? (
+        <LoadingBox></LoadingBox>
+      ) : error ? (
+        <MessageBox variant="danger">{error}</MessageBox>
+      ) : (
+        <table className="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>USER</th>
+              <th>DATE</th>
+              <th>TOTAL</th>
+              <th>PAID</th>
+              <th>DELIVERED</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order) => (
+              <tr key={order._id}>
+                <td>{order._id}</td>
+                <td>{order.name}</td>
+                <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice.toFixed(2)}</td>
                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
                 <td>
@@ -55,7 +75,7 @@ const OrderListScreen = () => {
                     type="button"
                     className="small"
                     onClick={() => {
-                      navigate(`/order/${order._id}`);
+                     navigate(`/order/${order._id}`);
                     }}
                   >
                     Details
@@ -63,7 +83,8 @@ const OrderListScreen = () => {
                   <button
                     type="button"
                     className="small"
-                    onclick={() => deleteHandler(order)}  >
+                    onClick={() => deleteHandler(order)}
+                  >
                     Delete
                   </button>
                 </td>
@@ -75,5 +96,3 @@ const OrderListScreen = () => {
     </div>
   );
 }
-
-export default OrderListScreen

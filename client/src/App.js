@@ -20,6 +20,7 @@ import AdminRoute from "./components/AdminRoute";
 import OrderListScreen from "./screens/OrderListScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from './screens/UserEditScreen';
+import SellerRoute from './components/SellerRoute'
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -75,6 +76,21 @@ function App() {
               </div>
             ) : (
               <Link to="/signin">Sign In</Link>
+            )}
+            {userInfo && userInfo.isSeller && (
+              <div className="dropdown">
+                <Link to="#admin">
+                  Seller <i className="fa fa-caret-down"></i>
+                </Link>
+                <ul className="dropdown-content">
+                  <li>
+                    <Link to="/productlist/seller">Products</Link>
+                  </li>
+                  <li>
+                    <Link to="/orderlist/seller">Orders</Link>
+                  </li>
+                </ul>
+              </div>
             )}
             {userInfo && userInfo.isAdmin && (
               <div className="dropdown">
@@ -133,7 +149,7 @@ function App() {
                 <AdminRoute>
                   <ProductListScreen />
                 </AdminRoute>
-              }
+              } exact
             ></Route>
             <Route
               path="/orderlist"
@@ -141,7 +157,7 @@ function App() {
                 <AdminRoute>
                   <OrderListScreen />
                 </AdminRoute>
-              }
+              } exact
             ></Route>
               <Route
               path="/userlist"
@@ -152,13 +168,32 @@ function App() {
               }
             ></Route>
                 <Route
-              path="//user/:id/edit"
+              path="/user/:id/edit"
               element={
                 <AdminRoute>
                   <UserEditScreen />
                 </AdminRoute>
               }
             ></Route>
+
+              <Route
+              path="/productlist/seller"
+              element={
+                <SellerRoute>
+                  <ProductListScreen />
+                </SellerRoute>
+              }
+            ></Route>
+            <Route
+              path="/orderlist/seller"
+              element={
+                <SellerRoute>
+                  <OrderListScreen />
+                </SellerRoute>
+              }
+            ></Route>
+           
+            
           </Routes>
         </main>
         <footer className="row center">ALL RIGHT RESERVED</footer>

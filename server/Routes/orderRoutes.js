@@ -1,23 +1,24 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModels.js';
-import { isAdmin, isAuth } from '../utils.js';
+import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 
 const orderRouter = express.Router();
-
-
-
 orderRouter.get(
   '/',
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find({}).populate('user', 'name');
+    const seller = req.query.seller || '';
+    const sellerFilter = seller ? { seller } : {};
+
+    const orders = await Order.find({ ...sellerFilter }).populate(
+      'user',
+      'name'
+    );
     res.send(orders);
   })
 );
-
-
 orderRouter.get(
   '/mine',
   isAuth,
@@ -26,7 +27,6 @@ orderRouter.get(
     res.send(orders);
   })
 );
-
 orderRouter.post(
   '/',
   isAuth,
@@ -35,6 +35,7 @@ orderRouter.post(
       res.status(400).send({ message: 'Cart is empty' });
     } else {
       const order = new Order({
+        seller: req.body.orderItems[0].seller,
         orderItems: req.body.orderItems,
         shippingAddress: req.body.shippingAddress,
         paymentMethod: req.body.paymentMethod,
@@ -51,8 +52,6 @@ orderRouter.post(
     }
   })
 );
-
-
 orderRouter.get(
   '/:id',
   isAuth,
@@ -65,7 +64,6 @@ orderRouter.get(
     }
   })
 );
-
 orderRouter.put(
   '/:id/pay',
   isAuth,
@@ -87,7 +85,20 @@ orderRouter.put(
     }
   })
 );
-
+orderRouter.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      const deleteOrder = await order.deleteOne();
+      res.send({ message: 'Order Deleted', order: deleteOrder });
+    } else {
+      res.status(404).send({ message: 'Order Not Found' });
+    }
+  })
+);
 orderRouter.put(
   '/:id/deliver',
   isAuth,
@@ -97,7 +108,6 @@ orderRouter.put(
     if (order) {
       order.isDelivered = true;
       order.deliveredAt = Date.now();
-
       const updatedOrder = await order.save();
       res.send({ message: 'Order Delivered', order: updatedOrder });
     } else {
