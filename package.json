@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
- 
+    "build" : "cd client && npm install --force && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js "
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-  }
+  },
+  "engines" : {"node": "20.10.0", "npm" : "10.2.3"}
 }
+
