@@ -26,6 +26,7 @@ import {
 
 //export const listProducts =({ seller = '' ,name = ''})  => async (dispatch) => {
   export const listProducts = ({
+    pageNumber = '',
     seller = '',
     name = '',
     category = '',
@@ -39,7 +40,7 @@ import {
   });
   
   try {
-    const { data } = await Axios.get(`/api/products?seller=${seller}&name=${name}&category=${category}&min=${min}&max=${max}&rating=${rating}&order=${order}`);
+    const { data } = await Axios.get(`/api/products?pageNumber=${pageNumber}&seller=${seller}&name=${name}&category=${category}&min=${min}&max=${max}&rating=${rating}&order=${order}`);
     console.log(`data is ${data}`)
     dispatch({
       type: PRODUCT_LIST_SUCCESS,

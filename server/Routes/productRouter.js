@@ -10,6 +10,10 @@ const productRouter = express.Router();
 productRouter.get(
   "/",
   expressAsyncHandler(async (req, res) => {
+
+    //const { page = 1, limit = 2 } = req.query;
+    const limit = 3;
+    const page = Number(req.query.pageNumber) || 1;
     const name = req.query.name || "";
     const category = req.query.category || '';
     const seller = req.query.seller || "";
@@ -35,7 +39,15 @@ productRouter.get(
         : order === 'toprated'
         ? { rating: -1 }
         : { _id: -1 };
+    const count = await Product.countDocuments({
+      ...sellerFilter,
+      ...nameFilter,
+      ...categoryFilter,
+      ...priceFilter,
+      ...ratingFilter,
+    });
     const products = await Product.find({
+
       ...sellerFilter,
       ...nameFilter,
       ...categoryFilter,
@@ -43,8 +55,9 @@ productRouter.get(
       ...ratingFilter,
     })
       .populate('seller', 'seller.name seller.logo')
-      .sort(sortOrder);
-    res.send(products);
+      .sort(sortOrder)
+      .skip((page-1) * limit).limit(limit).exec()
+      res.send( {products , pages : Math.ceil(count / limit) , page});
   })
 );
 

@@ -268,7 +268,12 @@ function App() {
 
             <Route path="/search/name/:name?" element={<SearchScreen />} />
 
-              <Route path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order" element={<SearchScreen />} />
+              <Route path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order/pageNumber/:pageNumber" element={<SearchScreen />} />
+              <Route
+            path="/productlist/pageNumber/:pageNumber"
+            element={<AdminRoute><ProductListScreen/></AdminRoute>}
+            exact
+          ></Route>
 
 
           </Routes>
