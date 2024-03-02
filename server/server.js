@@ -31,6 +31,11 @@ app.get('/api/config/paypal', (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || 'sb');
 });
 
+app.get('/api/config/google', (req, res) => {
+  res.send(process.env.GOOGLE_API_key || 'sb');
+});
+
+
 const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
