@@ -29,6 +29,8 @@ import LoadingBox from "./components/LoadingBox";
 import MessageBox from "./components/MessageBox";
 import MapScreen from "./screens/MapScreen";
 import DashboardScreen from "./screens/DashboardScreen";
+import SupportScreen from "./screens/SupportScreen";
+import ChatBox from "./components/ChatBox";
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -139,6 +141,9 @@ function App() {
                   </li>
                   <li>
                     <Link to="/userlist">Users</Link>
+                  </li>
+                  <li>
+                    <Link to="/support">Support</Link>
                   </li>
                 </ul>
               </div>
@@ -298,9 +303,13 @@ function App() {
                 </AdminRoute>
               }
             />
+            <Route path="/support" element={<SupportScreen />} />
           </Routes>
         </main>
-        <footer className="row center">ALL RIGHT RESERVED</footer>
+        <footer className="row center">{userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo} />}
+          <div>All right reserved</div>{' '} 
+        
+        </footer>
       </div>
     </BrowserRouter>
   );
