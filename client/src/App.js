@@ -24,10 +24,11 @@ import SellerRoute from "./components/SellerRoute";
 import SellerScreen from "./screens/SellerScreen";
 import SearchBox from "./components/SearchBox";
 import SearchScreen from "./screens/SearchScreen";
-import {listProductCategories}  from './actions/productActions'
-import LoadingBox from './components/LoadingBox';
-import MessageBox from './components/MessageBox';
+import { listProductCategories } from "./actions/productActions";
+import LoadingBox from "./components/LoadingBox";
+import MessageBox from "./components/MessageBox";
 import MapScreen from "./screens/MapScreen";
+import DashboardScreen from "./screens/DashboardScreen";
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -60,7 +61,7 @@ function App() {
       <div className="grid-container">
         <header className="row">
           <div>
-          <button
+            <button
               type="button"
               className="open-sidebar"
               onClick={() => setSidebarIsOpen(true)}
@@ -144,7 +145,7 @@ function App() {
             )}
           </div>
         </header>
-        <aside className={sidebarIsOpen ? 'open' : ''}>
+        <aside className={sidebarIsOpen ? "open" : ""}>
           <ul className="categories">
             <li>
               <strong>Categories</strong>
@@ -202,7 +203,7 @@ function App() {
                 </PrivateRoute>
               }
             ></Route>
-              <Route
+            <Route
               path="/map"
               element={
                 <PrivateRoute>
@@ -263,19 +264,40 @@ function App() {
             ></Route>
             <Route path="/seller/:id" element={<SellerScreen />} />
 
-            <Route path="/search/category/:category" element={<SearchScreen />} exact />
-            <Route path="/search/category/:category/name/:name" element={<SearchScreen />} exact />
+            <Route
+              path="/search/category/:category"
+              element={<SearchScreen />}
+              exact
+            />
+            <Route
+              path="/search/category/:category/name/:name"
+              element={<SearchScreen />}
+              exact
+            />
 
             <Route path="/search/name/:name?" element={<SearchScreen />} />
 
-              <Route path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order/pageNumber/:pageNumber" element={<SearchScreen />} />
-              <Route
-            path="/productlist/pageNumber/:pageNumber"
-            element={<AdminRoute><ProductListScreen/></AdminRoute>}
-            exact
-          ></Route>
-
-
+            <Route
+              path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order/pageNumber/:pageNumber"
+              element={<SearchScreen />}
+            />
+            <Route
+              path="/productlist/pageNumber/:pageNumber"
+              element={
+                <AdminRoute>
+                  <ProductListScreen />
+                </AdminRoute>
+              }
+              exact
+            ></Route>
+            <Route
+              path="/dashboard"
+              element={
+                <AdminRoute>
+                  <DashboardScreen />
+                </AdminRoute>
+              }
+            />
           </Routes>
         </main>
         <footer className="row center">ALL RIGHT RESERVED</footer>

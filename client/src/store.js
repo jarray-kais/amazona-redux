@@ -6,6 +6,7 @@ import {
 } from "redux";
 import { thunk } from "redux-thunk";
 import {
+  ListproductsReducer,
   productCategoryListReducer,
   productCreateReducer,
   productDeleteReducer,
@@ -34,6 +35,7 @@ import {
   orderListReducer,
   orderMineListReducer,
   orderPayReducer,
+  orderSummaryReducer,
 } from "./reducers/orderReucers";
 
 const initialState = {
@@ -54,6 +56,7 @@ const initialState = {
   },
 };
 const reducer = combineReducers({
+  listProduct : ListproductsReducer ,
   productList: productListReducer,
   productDetails: productDetailsReducer,
   cart: cartReducer,
@@ -78,6 +81,8 @@ const reducer = combineReducers({
   productCategoryList: productCategoryListReducer,
   productReviewCreate: productReviewCreateReducer,
   userAddressMap: userAddressMapReducer,
+  orderSummary : orderSummaryReducer , 
+
 });
 
 const composeEnhancher = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

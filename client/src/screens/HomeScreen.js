@@ -3,7 +3,7 @@ import Product from "../components/Product";
 import MessageBox from "../components/MessageBox";
 import LoadingBox from "../components/LoadingBox";
 import {useDispatch, useSelector} from 'react-redux'
-import { listProducts } from "../actions/productActions";
+import { Productslist} from "../actions/productActions";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import { listTopSellers } from "../actions/userActions";
@@ -11,8 +11,9 @@ import { Link } from "react-router-dom";
 
 export default function HomeScreen() {
   const dispatch = useDispatch()
-  const productList = useSelector((state) =>state.productList)
-  const{loading , error , products} = productList
+  const listProduct = useSelector((state) =>state.listProduct)
+  const{loading , error , products} = listProduct
+  console.log(products)
 
   const userTopSellersList = useSelector((state) => state.userTopSellersList);
   const {
@@ -22,7 +23,7 @@ export default function HomeScreen() {
   } = userTopSellersList;
 
   useEffect(() => {
-    dispatch(listProducts({}));
+    dispatch(Productslist({}));
     dispatch(listTopSellers());
   }, [dispatch]);
   return (
