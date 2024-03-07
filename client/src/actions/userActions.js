@@ -69,8 +69,6 @@ export const forgetPassword = (email) =>
         payload : data ,
         
       })
-      dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
-    localStorage.setItem('userInfo', JSON.stringify(data));
       console.log(data)
     } catch (error) {
       dispatch({

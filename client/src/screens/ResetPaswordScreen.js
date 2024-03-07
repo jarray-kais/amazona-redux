@@ -22,9 +22,9 @@ const ResetPaswordScreen = () => {
     const dispatch =useDispatch()
 
     useEffect(() => {
-      /* if (userInfo || ! token) {
+       if (userInfo || ! token) {
         navigate('/');
-      } */
+      } 
     }, [navigate, userInfo, token]);
     const submitHandler = (e)=>{
 
@@ -36,9 +36,7 @@ const ResetPaswordScreen = () => {
       navigate ('/signin')
     }
   }
-  console.log(password)
-  console.log(success)
-  console.log(loading)
+
   return (
     <div>
           <form className="form" onSubmit={submitHandler}>
