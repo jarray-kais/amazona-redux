@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { detailsUser } from "../actions/userActions";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { listProducts } from "../actions/productActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
@@ -9,6 +9,7 @@ import Rating from "../components/Rating";
 import Product from "../components/Product";
 
 const SellerScreen = () => {
+  const { pageNumber = 1} = useParams()
   const  params  = useParams();
   const sellerId = params.id;
 
@@ -19,14 +20,14 @@ const SellerScreen = () => {
   const {
     loading: loadingProducts,
     error: errorProducts,
-    products,
+    products, page , pages
   } = productList;
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(detailsUser(sellerId));
-    dispatch(listProducts({ seller: sellerId }));
-  }, [dispatch, sellerId]);
+    dispatch(listProducts({ seller: sellerId , pageNumber}));
+  }, [dispatch, sellerId , pageNumber]);
   return (
     <div className="row top">
     <div className="col-1">
@@ -77,7 +78,19 @@ const SellerScreen = () => {
             ))}
           </div>
         </>
-      )}
+        )}
+        <div className="row center pagination">
+            {[...Array(pages).keys()].map((x) => (
+              <Link
+                className={x + 1 === page ? 'active' : ''}
+                key={x + 1}
+                to={`/seller/${sellerId}/pageNumber/${x + 1}`}
+              >
+                {x + 1}
+              </Link>
+              ))}
+          </div>
+      
     </div>
   </div>
 );
