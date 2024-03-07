@@ -1,9 +1,15 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
+import jwt from 'jsonwebtoken'
 import bcrypt from "bcryptjs";
 import data from "../data.js";
 import User from "../models/userModel.js";
-import { generateToken , isAdmin, isAuth } from "../utils.js";
+import { generateToken , isAdmin, isAuth  , baseUrl} from "../utils.js";
+import nodemailer from 'nodemailer';
+//import Mailgen from 'mailgen';
+
+import dotenv from 'dotenv'
+dotenv.config();
 
 const userRouter = express.Router();
 
@@ -107,6 +113,79 @@ userRouter.put(
     }
   })
 );
+
+
+//forgot Password
+userRouter.post(
+  '/forget-password',
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findOne({ email: req.body.email  });
+    
+    if (user) {
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: '3h',
+      });
+      user.resetToken = token;
+      await user.save();
+      let config = {
+        service: 'gmail', // your email domain
+        auth: {
+            user: process.env.NODEJS_GMAIL_APP_USER,   // your email address
+            pass: process.env.NODEJS_GMAIL_APP_PASSWORD // your password
+        },
+      }
+      console.log(`${process.env.NODEJS_GMAIL_APP_USER}`)
+      
+      let transporter = nodemailer.createTransport(config);
+
+      let message = {
+        from: 'jarraykais1@gmail.com', // sender address
+        to:`${user.email}`, // list of receivers
+        subject: `Reset Password`, // Subject line
+        html: ` 
+        <p>Please Click the following link to reset your password:</p> 
+        <a href="${baseUrl()}/reset-password/${token}"}> Reset Password</a>
+        `,
+    };
+    transporter.sendMail(message).then((info) => {
+      return res.status(200).json(
+          {
+              msg: "We sent reset password link to your email.",
+          }
+      )
+        })
+      } else {
+        res.status(404).send({ message: 'User not found' });
+      }
+
+  })
+)
+userRouter.post(
+  '/reset-password',
+  expressAsyncHandler(async (req, res) => {
+    jwt.verify(req.body.token, process.env.JWT_SECRET || 'somethingsecret',async (err, decode) => {
+      if (err) {
+        console.log('first')
+        res.status(401).send({ message: 'Invalid Token' });
+      } else {
+        const user = await User.findOne({ resetToken: req.body.token });
+        
+        if (user) {
+          if (req.body.password) {
+            user.password = bcrypt.hashSync(req.body.password, 8);
+            await user.save();
+            res.send({
+              message: 'Password reseted successfully',
+            });
+          }
+        } else {
+          res.status(404).send({ message: 'User not found' });
+        }
+      }
+    });
+  })
+);
+
 
 userRouter.get(
   '/',

@@ -6,12 +6,18 @@ import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
+  USER_FORGETPASSWORD_FAIL,
+  USER_FORGETPASSWORD_REQUEST,
+  USER_FORGETPASSWORD_SUCCESS,
   USER_LIST_FAIL,
   USER_LIST_REQUEST,
   USER_LIST_SUCCESS,
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_RESETTPASSWORD_FAIL,
+  USER_RESETTPASSWORD_REQUEST,
+  USER_RESETTPASSWORD_SUCCESS,
   USER_SIGNIN_FAIL,
   USER_SIGNIN_REQUEST,
   USER_SIGNIN_SUCCESS,
@@ -25,6 +31,59 @@ import {
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_SUCCESS,
 } from "../constants/userConstants";
+
+
+
+export const forgetPassword = (email) =>
+  async(dispatch)=> {
+    dispatch({
+      type : USER_FORGETPASSWORD_REQUEST,
+    })
+    try {
+      const {data} = await Axios.post('/api/users/forget-password/', {email} )
+      dispatch({
+        type : USER_FORGETPASSWORD_SUCCESS,
+        payload : data
+      })
+    } catch (error) {
+      dispatch({
+        type: USER_FORGETPASSWORD_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  }
+
+    export const resetPassword = ( password,token , id) =>
+  async(dispatch)=> {
+    console.log('first')
+    dispatch({
+      type : USER_RESETTPASSWORD_REQUEST,
+    })
+    try {
+      const {data} = await Axios.post(`/api/users/reset-password/`, {password , token} )
+      dispatch({
+        type : USER_RESETTPASSWORD_SUCCESS,
+        payload : data ,
+        
+      })
+      dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
+    localStorage.setItem('userInfo', JSON.stringify(data));
+      console.log(data)
+    } catch (error) {
+      dispatch({
+        type: USER_RESETTPASSWORD_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+
+  }
+  
 
 
 export const register = (name, email, password) => async (dispatch) => {

@@ -1,4 +1,20 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv'
+//import * as FormData from 'form-data'
+//import Mailgun from 'mailgun.js';
+
+dotenv.config();
+
+export const baseUrl = () =>
+  process.env.BASE_URL
+    ? process.env.BASE_URL
+    : process.env.NODE_ENV !== 'production'
+    ? 'http://localhost:3000'
+    : 'https://yourdomain.com';
+      console.log(process.env.BASE_URL)
+  
+  
+
 
 export const generateToken = (user) => {
   return jwt.sign(
@@ -57,3 +73,19 @@ export const isSellerOrAdmin = (req, res, next) => {
     res.status(401).send({ message: 'Invalid Admin/Seller Token' });
   }
 };
+
+
+/* export const mailgun = () =>
+
+{const mailgun = new Mailgun(formData);
+ const mg= mailgun.client({
+    username: process.env.MAILGUN_API_KEY,
+    key: process.env.MAILGUN_DOMAIN,
+
+   
+  })}; console.log(process.env.MAILGUN_API_KEY)
+   console.log(process.env.MAILGUN_DOMAIN)
+   */
+  
+  /* const  mailgun  =  new  Mailgun ( FormData ) ; 
+  mg = () =>  mailgun.client ( { username : process.env.MAILGUN_DOMAIN ||'api' ,  key : process . env . MAILGUN_API_KEY  ||  'key-yourkeyhere' } ) ; */

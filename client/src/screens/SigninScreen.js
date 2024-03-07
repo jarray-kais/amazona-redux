@@ -73,6 +73,12 @@ const SigninScreen = () => {
               Create your account
             </Link>
           </div>
+            <br/>
+            <br/>
+
+          <div className="mb-3">
+            Forget Password? <Link to={`/forget-password`}>Click here</Link>
+          </div>
         </div>
       </form>
     </div>

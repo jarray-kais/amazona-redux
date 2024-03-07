@@ -52,7 +52,7 @@ app.use((err, req, res, next) => {
 });
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 const httpServer = http.Server(app);
 const io = new Server(httpServer, { cors: { origin: '*' } });

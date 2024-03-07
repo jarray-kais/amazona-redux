@@ -17,6 +17,8 @@ import {
 } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducers";
 import {
+  ForgetPasswordReducer,
+  ResetPasswordReducer,
   userAddressMapReducer,
   userDeleteReducer,
   userDetailsReducer,
@@ -82,6 +84,8 @@ const reducer = combineReducers({
   productReviewCreate: productReviewCreateReducer,
   userAddressMap: userAddressMapReducer,
   orderSummary : orderSummaryReducer , 
+  forget : ForgetPasswordReducer ,
+  reset : ResetPasswordReducer ,
 
 });
 

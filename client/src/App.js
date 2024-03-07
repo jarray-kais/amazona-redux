@@ -31,6 +31,8 @@ import MapScreen from "./screens/MapScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import SupportScreen from "./screens/SupportScreen";
 import ChatBox from "./components/ChatBox";
+import ForgetPasswordScreen from "./screens/ForgetPasswordScreen";
+import ResetPaswordScreen from "./screens/ResetPaswordScreen";
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -304,6 +306,11 @@ function App() {
               }
             />
             <Route path="/support" element={<SupportScreen />} />
+
+              <Route path="/forget-password" element={<ForgetPasswordScreen/>}/>
+
+              <Route path="/reset-password/:token" element={<ResetPaswordScreen/>}/>
+
           </Routes>
         </main>
         <footer className="row center">{userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo} />}

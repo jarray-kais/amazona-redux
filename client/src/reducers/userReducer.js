@@ -29,6 +29,12 @@ import {
   USER_TOPSELLERS_LIST_SUCCESS,
   USER_TOPSELLERS_LIST_FAIL,
   USER_ADDRESS_MAP_CONFIRM,
+  USER_FORGETPASSWORD_REQUEST,
+  USER_FORGETPASSWORD_SUCCESS,
+  USER_FORGETPASSWORD_FAIL,
+  USER_RESETTPASSWORD_REQUEST,
+  USER_RESETTPASSWORD_SUCCESS,
+  USER_RESETTPASSWORD_FAIL,
 } from "../constants/userConstants";
 
 export const userSigninRducerr = (state = {}, action) => {
@@ -151,6 +157,34 @@ export const userAddressMapReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_ADDRESS_MAP_CONFIRM:
       return { address: action.payload };
+    default:
+      return state;
+  }
+};
+
+
+export const ForgetPasswordReducer = (state = {email : ""} , action) =>{
+  switch (action.type) {
+      case USER_FORGETPASSWORD_REQUEST :
+        return { loading : true}
+      case USER_FORGETPASSWORD_SUCCESS :
+        return { loading : false , email : action.payload , success : true }
+      case USER_FORGETPASSWORD_FAIL :
+        return {loading: false, error: action.payload}
+
+    default :
+    return state
+  }
+}
+
+export const ResetPasswordReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_RESETTPASSWORD_REQUEST:
+      return { loading: true };
+    case USER_RESETTPASSWORD_SUCCESS:
+      return { loading: false, userInfo: action.payload , success : true };
+    case USER_RESETTPASSWORD_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }
