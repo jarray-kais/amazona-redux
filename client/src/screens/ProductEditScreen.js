@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
 
 
-const ProductEditScreen = (props) => {
+const ProductEditScreen = () => {
 
 
     const navigate = useNavigate()
@@ -133,6 +133,7 @@ const ProductEditScreen = (props) => {
                   placeholder="Enter image"
                   value={image}
                   onChange={(e) => setImage(e.target.value)}
+                  required
                 ></input>
               </div>
               <div>

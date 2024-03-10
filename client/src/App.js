@@ -271,9 +271,6 @@ function App() {
             ></Route>
             <Route path="/seller/:id" element={<SellerScreen />} />
             <Route path="/seller/:id/pageNumber/:pageNumber" element={<SellerScreen />} />
-
-           
-
             <Route
               path="/search/category/:category"
               element={<SearchScreen />}
