@@ -10,7 +10,7 @@ const data = {
       isSeller :true,
       seller : {
         name : 'Puma',
-        logo : '/images/logo192.png',
+        logo : '/images/logo1.png',
         description : 'best seller',
         rating : 4.5,
         numReviews : 120 ,

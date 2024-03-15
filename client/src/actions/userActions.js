@@ -1,4 +1,5 @@
 import Axios from "axios";
+//import Cookies from 'js-cookie';
 import {
   USER_DELETE_FAIL,
   USER_DELETE_REQUEST,
@@ -118,6 +119,7 @@ export const signin = (email, password) => async (dispatch) => {
       payload: data,
     });
     localStorage.setItem("userInfo", JSON.stringify(data));
+    //Cookies.set("token", token ,  { expires: 7 });
   } catch (error) {
     dispatch({
       type: USER_SIGNIN_FAIL,

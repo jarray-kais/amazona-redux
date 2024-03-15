@@ -34,7 +34,9 @@ import ChatBox from "./components/ChatBox";
 import ForgetPasswordScreen from "./screens/ForgetPasswordScreen";
 import ResetPaswordScreen from "./screens/ResetPaswordScreen";
 
+
 function App() {
+
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
@@ -61,6 +63,7 @@ function App() {
   }, [dispatch]);
 
   return (
+    
     <BrowserRouter>
       <div className="grid-container">
         <header className="row">
@@ -79,7 +82,7 @@ function App() {
           <div>
             <SearchBox></SearchBox>
           </div>
-          <div>
+                    <div>
             <Link to={"/cart"}>
               Cart
               {cartItems.length > 0 && (

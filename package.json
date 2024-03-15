@@ -4,14 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build" : "cd server && npm install --force && cd .. && cd client && npm install --force && npm run build",
+    "build": "cd server && npm install --force && cd .. && cd client && npm install --force && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js "
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
   },
-  "engines" : {"node": "20.10.0", "npm" : "10.2.3"}
+  "engines": {
+    "node": "20.10.0",
+    "npm": "10.2.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "babel-loader": "^9.1.3"
+  }
 }
-

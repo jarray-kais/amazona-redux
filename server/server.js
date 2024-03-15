@@ -1,10 +1,12 @@
 import express from 'express';
-import cors from 'cors'
+
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import path from 'path'
 import http from 'http';
 import { Server } from 'socket.io';
+import cookieParser from "cookie-parser";
+
 
 
 import userRouter from './Routes/userRoutes.js';
@@ -22,8 +24,11 @@ mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/amazona-redux')
   console.log(err.message);
 });
 
+
 const app = express();
-app.use(express.json(), express.urlencoded({ extended: true }),cors());
+app.use(express.json(), express.urlencoded({ extended: false }));
+app.use(cookieParser())
+
 
 app.use('/api/uploads',uploadRouter)
 app.use('/api/users', userRouter);

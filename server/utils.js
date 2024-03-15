@@ -21,7 +21,7 @@ export const generateToken = (user) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      isSeller: user.isSeller,
+      isSeller: user.isSeller, 
     },
     process.env.JWT_SECRET || 'somethingsecret',
     {
@@ -48,6 +48,14 @@ export const isAuth = (req, res, next) => {
   } else {
     res.status(401).send({ message: 'No Token' });
   }
+  /* const token = req.cookies.access_token;
+  if (!token) return next(createError(401, "You are not authenticated!"));
+
+  jwt.verify(token, process.env.JWT, (err, user) => {
+    if (err) return next(createError(403, "Token is not valid!"));
+    req.user = user;
+    next()
+  }); */
 };
 export const isAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
